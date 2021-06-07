@@ -3,36 +3,40 @@ body {
   padding: 0;
 }
 
-nav{
-    display: flex;
+nav {
+  display: flex;
 }
 
-.shadow-modal{
+.shadow-modal {
   position: absolute;
-  margin-top:-7.5%;
+  margin-top: -7.5%;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.651);
   padding-top: 20px;
 }
-.form-style{
+
+.form-style {
   background-color: #fff;
   width: 500px;
   height: 500px;
   margin: auto;
   padding: 10px;
-  
 }
-form > input,fieldset{
+
+form > input,
+fieldset {
   display: block;
-  width:90%;
-  margin:auto;
-  margin-bottom:10px;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 10px;
 }
-.form-style > h3{
+
+.form-style > h3 {
   text-align: center;
 }
-.btn-cerrar{
+
+.btn-cerrar {
   display: block;
   margin-left: 95%;
 }
