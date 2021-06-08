@@ -23,6 +23,12 @@ let crearForm = () =>{
     formNuevoCliente.appendChild(btnEnviar);
     backgroundModal.classList.add('shadow-modal');    
 }
+//funcion para agregar labels a los select
+function setLabels(texto){
+    let opcion = document.createElement('option');
+    opcion.innerHTML = texto;
+    return opcion;
+}
 
 function agregarInputs(){
     let nombre = document.createElement('input');
@@ -38,6 +44,9 @@ function agregarInputs(){
     let calle = document.createElement('select');
     let numeroCalle = document.createElement('input');
     let arrayPrivilegios = ['Admin','Cajero','Cliente'];
+    let labelCalle = setLabels('Calle');
+    let labelPriv = setLabels('Permisos');
+    let labelSector = setLabels('Sector');
 
     nombre.setAttribute('name','nombre');
     nombre.setAttribute('placeholder','Digite nombre');
@@ -46,6 +55,7 @@ function agregarInputs(){
     cedula.setAttribute('name','cedula');
     cedula.setAttribute('placeholder','Cedula');
     direccion.setAttribute('name','direccion');
+    numeroCalle.setAttribute('placeholder','#')
     telefono.setAttribute('name','telefono');
     telefono.setAttribute('placeholder','000-000-0000');
     correo.setAttribute('name','correo');
@@ -53,6 +63,9 @@ function agregarInputs(){
     password.setAttribute('name','password');
     password.setAttribute('placeholder','Contrasena');
     privilegio.setAttribute('name','privilegio');
+    privilegio.appendChild(labelPriv);
+    sector.appendChild(labelSector);
+    
     
 
     arrayPrivilegios.map(valor => {
@@ -69,16 +82,36 @@ function agregarInputs(){
             response.forEach(item =>{
               let dato = document.createElement('option');
               dato.innerHTML = item['nombre_sector'];
+              dato.setAttribute('value',item['id_sector']);
               sector.appendChild(dato); 
             })
         }
+    })
+
+    sector.addEventListener('change',function(event){
+        let idSector = parseInt(event.target.value);
+        calle.innerHTML='';
+        //let idSector = event.target.value;
+            $.ajax({
+                method:'post',
+                data:{idSector:idSector},
+                success:function(response){
+                   let infoArray = JSON.parse(response);
+                   infoArray.forEach(item=>{
+                       let street = document.createElement('option');
+                       street.innerHTML = item['nombre_calle'];
+                       street.setAttribute('value',item['id_calle']);
+                       calle.appendChild(street);
+                   })
+                }
+            })     
     })
 
 
     direccion.appendChild(sector);
     direccion.appendChild(calle);
     direccion.appendChild(numeroCalle);
-
+    calle.appendChild(labelCalle);
     form.appendChild(nombre);
     form.appendChild(apellidos);
     form.appendChild(cedula);

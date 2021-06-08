@@ -18,8 +18,22 @@
       echo json_encode($sectores);
       exit;
     }
-    
-   
+  }
+
+  if(isset($_POST['idSector'])){
+    try{
+    $stmt = $con->prepare('SELECT id_calle, nombre_calle FROM calles WHERE id_sector LIKE '.$_POST['idSector'].'');
+    $stmt->execute();
+    $calles = $stmt->fetchAll();
+
+    if(!empty($calles)){
+      echo json_encode($calles);
+      exit;
+    }
+  }catch(Exception $e){
+    echo 'No hay calles con ese sector';
+    exit;
+  }
   }
   include 'views/usuarios.view.php';
 
