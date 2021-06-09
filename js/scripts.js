@@ -16,12 +16,26 @@ let crearForm = () =>{
     formNuevoCliente.classList.add('form-style');
     tituloForm.innerHTML = 'Crear Cliente';
     formNuevoCliente.setAttribute('id','formClientes');
+    formNuevoCliente.setAttribute('method','post');
+    formNuevoCliente.setAttribute('name','formClienteNuevo');
+    formNuevoCliente.setAttribute('onsubmit','return validation()')
     formNuevoCliente.appendChild(btnCerrar);
     formNuevoCliente.appendChild(tituloForm);
     backgroundModal.appendChild(formNuevoCliente);
     agregarInputs();
     formNuevoCliente.appendChild(btnEnviar);
     backgroundModal.classList.add('shadow-modal');    
+}
+//validacion antes de enviar
+function validation(){
+    let nombre = document.forms["formClienteNuevo"]["nombre"].value;
+    let regEx1 = /[\W\d]/g;
+    
+    if(regEx1.test(nombre)){
+        alert('nombre invalido')
+    }else{
+        alert('Correcto');
+    }
 }
 //funcion para agregar labels a los select
 function setLabels(texto){
@@ -47,30 +61,40 @@ function agregarInputs(){
     let labelCalle = setLabels('Calle');
     let labelPriv = setLabels('Permisos');
     let labelSector = setLabels('Sector');
+    let dirLabel = document.createElement("LEGEND");
+
 
     nombre.setAttribute('name','nombre');
     nombre.setAttribute('placeholder','Digite nombre');
+    nombre.setAttribute('id','nombre');
     apellidos.setAttribute('name','apellidos');
     apellidos.setAttribute('placeholder','Digite apellidos');
+    apellidos.setAttribute('id','apellidos');
     cedula.setAttribute('name','cedula');
     cedula.setAttribute('placeholder','Cedula');
+    cedula.setAttribute('id','cedula');
     direccion.setAttribute('name','direccion');
     numeroCalle.setAttribute('placeholder','#')
     telefono.setAttribute('name','telefono');
     telefono.setAttribute('placeholder','000-000-0000');
+    telefono.setAttribute('id','tel');
     correo.setAttribute('name','correo');
     correo.setAttribute('placeholder','correo');
+    correo.setAttribute('id','correo');
     password.setAttribute('name','password');
     password.setAttribute('placeholder','Contrasena');
+    password.setAttribute('id','pass');
     privilegio.setAttribute('name','privilegio');
     privilegio.appendChild(labelPriv);
     sector.appendChild(labelSector);
-    
+    password.setAttribute('type','hidden');
+    dirLabel.innerText='Direccion';
     
 
     arrayPrivilegios.map(valor => {
         let dato = document.createElement('option');
         dato.innerHTML = valor;
+        dato.setAttribute('value',valor);
         privilegio.appendChild(dato);
     });
 
@@ -107,7 +131,16 @@ function agregarInputs(){
             })     
     })
 
+    privilegio.addEventListener('change',function(event){
+        let priv = event.target.value;
+        if(priv == 'Admin' || priv == 'Cajero'){
+            password.removeAttribute('type');
+        }else{
+            password.setAttribute('type','hidden');
+        }
+    })
 
+    direccion.appendChild(dirLabel);
     direccion.appendChild(sector);
     direccion.appendChild(calle);
     direccion.appendChild(numeroCalle);
@@ -119,8 +152,5 @@ function agregarInputs(){
     form.appendChild(telefono);
     form.appendChild(correo);
     form.appendChild(password);
-    form.appendChild(privilegio);
-
-
-    
+    form.appendChild(privilegio);  
 }
